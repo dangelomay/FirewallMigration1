@@ -1,0 +1,31 @@
+# Firewall Migration Audit: SonicWall TZ270 to UniFi Dream Machine (UDM)
+
+## 1. WAN (ISP) Configuration
+* **Interface:** X1 (or U0)
+* **Connection Type:** [DHCP / Static / PPPoE]
+* **IP Address:**
+* **Subnet Mask:**
+* **Gateway:**
+* **DNS Servers:**
+
+## 2. LAN & DHCP (Current State)
+* **Interface:** X0
+* **Gateway IP & Subnet:**
+* **DHCP Scopes:**
+* **Static DHCP Leases (MAC Reservations):** [Crucial: List all hardcoded IPs for printers/servers here]
+
+## 3. Address Objects (SonicWall Variables)
+* *Note: Only document custom objects created by the admin, ignore default SonicWall system objects.*
+* **[Object Name]** -> **[IP Address / Subnet]**
+* **[Object Name]** -> **[IP Address / Subnet]**
+
+## 4. NAT Policies & Port Forwarding
+* **Rule:** [Public Port] -> [Internal IP] -> [Internal Port]
+
+## 5. Firewall Access Rules
+* **WAN to LAN:** [List explicitly allowed external inbound traffic]
+* **LAN to LAN:** [List internal routing restrictions]
+
+## 6. VPN Configuration
+* **Site-to-Site VPNs:** [List endpoints]
+* **Client VPNs (SSL-VPN / Global VPN):** [List remote access needs]
