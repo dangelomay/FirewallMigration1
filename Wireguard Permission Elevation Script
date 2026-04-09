@@ -1,0 +1,31 @@
+# --- 1. ELEVATION CHECK (Prevents "Access Denied") ---
+if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    Write-Host "ERROR: ACCESS DENIED. You must right-click PowerShell and select 'Run as Administrator'." -ForegroundColor Red
+    Pause
+    Exit
+}
+
+# --- 2. SET VARIABLES ---
+# Replace with the actual domain and username (e.g., "COMPANYDOMAIN\jdoe")
+$DomainUser = "YOURDOMAIN\Username" 
+
+Write-Host "Starting WireGuard Non-Admin Deployment..." -ForegroundColor Cyan
+
+# --- 3. SET THE REGISTRY KEY (Using Native REG.EXE to bypass PS limits) ---
+Write-Host "Configuring Registry for Limited Operator UI..."
+$RegCommand = 'reg add "HKLM\SOFTWARE\WireGuard" /v LimitedOperatorUI /t REG_DWORD /d 1 /f'
+Invoke-Expression $RegCommand | Out-Null
+Write-Host "[SUCCESS] Registry key set." -ForegroundColor Green
+
+# --- 4. GRANT NETWORK PERMISSIONS (Using Native NET.EXE) ---
+Write-Host "Adding $DomainUser to Network Configuration Operators..."
+$NetCommand = 'net localgroup "Network Configuration Operators" "' + $DomainUser + '" /add'
+Invoke-Expression $NetCommand | Out-Null
+Write-Host "[SUCCESS] User added to local group." -ForegroundColor Green
+
+Write-Host "------------------------------------------------"
+Write-Host "SCRIPT COMPLETE. EXECUTE THE FINAL 3 STEPS MANUALLY:" -ForegroundColor Cyan
+Write-Host "1. Open the WireGuard app as Administrator."
+Write-Host "2. Import the user's .conf file."
+Write-Host "3. Have the user LOG OUT and LOG IN to receive their new permissions."
+Write-Host "------------------------------------------------"
