@@ -1,0 +1,12 @@
+[Interface]
+PrivateKey = <CLIENT_PRIVATE_KEY>
+Address = <CLIENT_VPN_IP>/32
+DNS = <INTERNAL_DNS_IP>, 8.8.8.8
+MTU = 1280
+
+[Peer]
+PublicKey = <SERVER_PUBLIC_KEY>
+Endpoint = <SERVER_PUBLIC_IP>:<PORT>
+# The /25 masks override standard /24 residential router subnets
+AllowedIPs = <LAN_SUBNET_FIRST_HALF>/25, <LAN_SUBNET_SECOND_HALF>/25, <VPN_SUBNET>/24
+PersistentKeepalive = 25
